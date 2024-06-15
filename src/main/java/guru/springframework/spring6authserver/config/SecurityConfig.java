@@ -41,6 +41,8 @@ import java.util.UUID;
 @Configuration
 public class SecurityConfig {
 
+
+
     @Bean
     @Order(1)
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -151,7 +153,9 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder()
+                .issuer("http://auth-server:9000")
+                .build();
     }
 }
 
