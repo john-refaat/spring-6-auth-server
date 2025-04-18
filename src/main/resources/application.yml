@@ -1,5 +1,8 @@
 server:
   port: 9000
+auth:
+  server:
+    issuer: http://localhost:9000
 spring:
   security:
     oauth2:
@@ -11,3 +14,15 @@ spring:
               client-secret: "{noop}secret"
               client-authentication-methods: client_secret_basic
               authorization-grant-types: client_credentials
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      show-details: always
+      probes:
+        enabled: true
+    endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, beans

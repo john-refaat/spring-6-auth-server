@@ -5,8 +5,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
@@ -22,6 +24,7 @@ import java.util.UUID;
  * @since 29/08/2024
  */
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
    /* @Bean
@@ -92,6 +95,9 @@ public class SecurityConfig {
         return new InMemoryRegisteredClientRepository(oidcClient);
     }*/
 
+    @Value("${auth.server.issuer}")
+    private String issuer;
+
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPair = generateRsaKey();
@@ -125,7 +131,9 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder()
+                .issuer(issuer) // Set your issuer here
+                .build();
     }
 
 }
